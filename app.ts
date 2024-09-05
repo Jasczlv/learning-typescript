@@ -1,86 +1,45 @@
-function add(a1: number, a2: number) {
-  return a1 + a2;
+function combine(
+  input1: number | string,
+  input2: number | string,
+  resultType: "as-number" | "as-string"
+) {
+  let result;
+  if (typeof input1 === "number" && typeof input2 === "number") {
+    result = input1 + input2;
+  } else {
+    result = input1.toString() + input2.toString();
+  }
+
+  if (resultType === "as-number") {
+    return +result;
+  } else if (resultType === "as-string") {
+    return result.toString();
+  }
 }
 
-const number1 = 5;
-const number2 = "5.5";
+// const combinedAges = combine(30, 26);
+// console.log(combinedAges);
 
-const result = add(+number1, +number2);
-console.log(result);
+// const combinedNames = combine("Max", "Anna");
+// console.log(combinedNames);
 
-const obj: {
-  name: string;
-  age: number;
-  hobbies: string[];
-} = {
-  name: "Ianis",
-  age: 23,
-  hobbies: ["Piano", "Music", "Dancing"],
-};
+const combinedStr = combine(30, 20, "as-string");
+const combinedNum = combine(30, 20, "as-number");
 
-let arrStr: string[];
-arrStr = ["String"]; //can't insert numbers etc
+console.log(combinedNum + " as num", combinedStr + " " + typeof combinedStr);
 
-let arrAny: any[]; //typical js array
-arrAny = ["String", 1]; //can insert anything
-
-for (const hobby of obj.hobbies) {
-  console.log(hobby.toUpperCase()); //toUpperCase() doesn't give any error because ts knows the value recieved will be a string
-  // console.log(hobby.map()) !!! GIVES ERROR !!! NOT AN ARRAY
+function add(n1: number, n2: number) {
+  return +n1 + +n2;
 }
 
-//TUPLE
+let callAdd: (a: number, b: number) => number; //this was changed after line 44 to accept functions with numbers as arguments that return number
+callAdd = add;
+console.log(callAdd(1, 2)); //works but what if...
 
-// const noTuple = {
-//   name: 'Marco',
-//   age: 32,
-//   hobbies: ['Pallavolo', 'Calcio', 'Mangiare'],
-//   random: [1, ciao, nero, XD, 123] questo da errore
-// }
-
-const tuple: {
-  name: string;
-  age: number;
-  hobbies: string[];
-  random: [number, string]; //tuple
-} = {
-  name: "Marco",
-  age: 32,
-  hobbies: ["Pallavolo", "Calcio", "Mangiare"],
-  random: [1, "ciao"], //questo va bene
-};
-
-//tuple doesn't allow you to put inside the array any number of elements you want, if you wanted an array with one number and 2 strings in the case above you would need to add to random typization [number, string, string]. This is just for strictness, it is needed only when you expect a certain number of elements inside the array!
-
-//ENUM
-
-//what enum does is assign labels to numbers so in this case theoretically ADMIN shoul be 0 and READ_ONLY = 1 as in a js array
-
-enum Role {
-  ADMIN,
-  READ_ONLY,
-  AUTHOR,
+function printResult(num: number): void {
+  //here we return void which is different from undefined
+  console.log("Result: " + num);
 }
 
-enum CustomRole {
-  ADMIN = "ADMIN", //HERE WE LABEL ADMIN AS 'ADMIN'
-  READ_ONLY = 200, //HERE WE ASSIGN 200 SO THE NEXT INDEX WILL INCREMENT FROM HERE
-  AUTHOR = 400, // SAME AS THE ONE ABOVE, DOESN'T INCREMENT BECAUSE ALREADY DEFINED, IF LEFT UNTOUCHED WOULD BE 201
-}
-
-const person = {
-  name: "Ianis",
-  age: 23,
-  hobbies: ["Piano", "Music", "Dancing"],
-  role: Role.ADMIN,
-};
-
-if (person.role === Role.AUTHOR) {
-  console.log("is author");
-} else if (person.role === Role.ADMIN) {
-  console.log("is admin");
-} else {
-  console.log("is user");
-}
-
-console.log(Role.ADMIN, Role.READ_ONLY, Role.AUTHOR);
+// callAdd = printResult;
+// console.log(callAdd(1)); //this works but it shouldn't if we want it to work only for the add function so what we do is set callAdd to accept functions with determined parameters

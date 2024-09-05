@@ -44,7 +44,7 @@ const tuple: {
   hobbies: string[];
   random: [number, string]; //tuple
 } = {
-  name: "Marco",
+  name: "Marcos",
   age: 32,
   hobbies: ["Pallavolo", "Calcio", "Mangiare"],
   random: [1, "ciao"], //questo va bene
